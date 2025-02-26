@@ -6,27 +6,27 @@ profile: "sandbox"
 
 vars:
   # Platform flags
-  SQP: False
-  AMAZONSBADS: False
-  AMAZONSDADS: False
-  AMAZONSELLER: False
-  AMAZONSPADS: False
-  AMAZONVENDOR: False
-  AMAZONDSPADS: False
-  AMC: False
-  AMS: False
-  BINGADS: False
-  FACEBOOK: False
-  GA4: False
-  GOOGLEADS: False
-  GSS: False
-  KLAVIYO3: False
-  PINTERESTADS: False
-  RECHARGE: False
-  SHOPIFYV2: False
-  TEST: False
-  UPSCRIBE: False
-  LOOPSUBSCRIPTIONS: False
+  SQP: false
+  AMAZONSBADS: false
+  AMAZONSDADS: false
+  AMAZONSELLER: false
+  AMAZONSPADS: false
+  AMAZONVENDOR: false
+  AMAZONDSPADS: false
+  AMC: false
+  AMS: false
+  BINGADS: false
+  FACEBOOK: false
+  GA4: false
+  GOOGLEADS: false
+  GSS: false
+  KLAVIYO3: false
+  PINTERESTADS: false
+  RECHARGE: false
+  SHOPIFYV2: false
+  TEST: false
+  UPSCRIBE: false
+  LOOPSUBSCRIPTIONS: false
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
