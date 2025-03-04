@@ -1,0 +1,3 @@
+packages:
+  - git: "https://{{ env_var('GHUB_PAT', 'ghp_1234567890') }}@github.com/sarasanalytics-com/EDM-Insights.git"
+    revision: main
