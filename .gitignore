@@ -169,3 +169,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+composer/
+dbt/keyfile.json
+dbt/.user.yml
+dbt/target
+dbt/logs
+dbt/dbt_packages
+dbt/package-lock.yml
