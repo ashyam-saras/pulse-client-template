@@ -1,3 +1,4 @@
+import json
 import subprocess
 from pathlib import Path
 
@@ -37,15 +38,20 @@ def execute_command(cmd):
     return process.returncode == 0, output_lines
 
 
-def run_dbt_command(command, project_dir=None, profiles_dir=None, target="dev"):
+def run_dbt_command(command, project_dir=None, profiles_dir=None, target="dev", **kwargs):
     """
-    Simple function to execute a dbt command with automatic deps installation
+    Execute a dbt command with support for all CLI options
 
     Args:
         command: dbt command to run (e.g., 'run', 'test')
         project_dir: dbt project directory (Path or string)
         profiles_dir: dbt profiles directory (Path or string)
         target: dbt target environment
+        **kwargs: Additional dbt arguments:
+            - select: Models to include
+            - exclude: Models to exclude
+            - full_refresh: Whether to run with --full-refresh
+            - vars: Dict of variables to pass to dbt
 
     Returns:
         True if command succeeded, False otherwise
@@ -64,6 +70,20 @@ def run_dbt_command(command, project_dir=None, profiles_dir=None, target="dev"):
         "--target",
         target,
     ]
+
+    # Process additional arguments
+    if kwargs.get("select"):
+        base_args.extend(["--select", kwargs["select"]])
+
+    if kwargs.get("exclude"):
+        base_args.extend(["--exclude", kwargs["exclude"]])
+
+    if kwargs.get("full_refresh") == True:
+        base_args.append("--full-refresh")
+
+    if kwargs.get("vars"):
+        vars_json = json.dumps(kwargs["vars"])
+        base_args.extend(["--vars", vars_json])
 
     # Run dbt deps first (unless the command is already deps)
     if command != "deps":

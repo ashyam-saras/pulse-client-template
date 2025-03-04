@@ -2,6 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from airflow.decorators import dag, task
+from airflow.operators.python import get_current_context
 
 from config.client_config import ClientConfig
 from utils.helpers import run_dbt_command
@@ -30,7 +31,20 @@ def dbt_dag():
     @task
     def dbt_run():
         """Run dbt models"""
-        success = run_dbt_command(command="run", project_dir=DBT_DIR, profiles_dir=DBT_DIR, target=config.environment)
+        context = get_current_context()
+        dag_run_conf = context["dag_run"].conf or {}
+
+        # Get task-specific config, defaulting to empty dict
+        task_config = dag_run_conf.get("dbt_run", {})
+
+        success = run_dbt_command(
+            command="run",
+            project_dir=DBT_DIR,
+            profiles_dir=DBT_DIR,
+            target=config.environment,
+            **task_config,  # Pass all task-specific configs
+        )
+
         if not success:
             raise Exception("dbt run failed")
         return "dbt run completed successfully"
@@ -38,7 +52,20 @@ def dbt_dag():
     @task
     def dbt_test():
         """Test dbt models"""
-        success = run_dbt_command(command="test", project_dir=DBT_DIR, profiles_dir=DBT_DIR, target=config.environment)
+        context = get_current_context()
+        dag_run_conf = context["dag_run"].conf or {}
+
+        # Get task-specific config, defaulting to empty dict
+        task_config = dag_run_conf.get("dbt_test", {})
+
+        success = run_dbt_command(
+            command="test",
+            project_dir=DBT_DIR,
+            profiles_dir=DBT_DIR,
+            target=config.environment,
+            **task_config,  # Pass all task-specific configs
+        )
+
         if not success:
             raise Exception("dbt test failed")
         return "dbt test completed successfully"
